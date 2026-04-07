@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "동판교성당 WYD 2027",
+  title: "2027 WYD 동판교성당",
   description:
     "2027 세계청년대회(WYD) 서울 대회를 준비하는 수원교구 동판교성당 홈페이지",
 };
