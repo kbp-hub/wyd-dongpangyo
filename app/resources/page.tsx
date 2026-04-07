@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { supabase, BUCKET_NAME } from "@/lib/supabase";
+import { supabase, supabaseConfig, BUCKET_NAME } from "@/lib/supabase";
 
 interface FileItem {
   name: string;
@@ -80,13 +80,11 @@ export default function ResourcesPage() {
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    // Supabase 클라이언트 대신 fetch API로 직접 업로드 (한글 헤더 문제 회피)
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const uploadUrl = `${supabaseUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
+    const { url: sbUrl, key: sbKey } = supabaseConfig;
+    const uploadUrl = `${sbUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
 
     try {
-      if (!supabaseUrl || !supabaseKey) {
+      if (!sbUrl || !sbKey) {
         setMessage({ type: "error", text: "Supabase 설정이 누락되었습니다. 환경변수를 확인하세요." });
         setUploading(false);
         return;
@@ -98,8 +96,8 @@ export default function ResourcesPage() {
       const res = await fetch(uploadUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${supabaseKey}`,
-          apikey: supabaseKey,
+          Authorization: `Bearer ${sbKey}`,
+          apikey: sbKey,
           "Content-Type": contentType,
           "x-upsert": "true",
         },
