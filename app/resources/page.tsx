@@ -80,14 +80,23 @@ export default function ResourcesPage() {
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    // 한글 파일명이 헤더에 포함되지 않도록 새 File 객체 생성
-    const safeFile = new File([file], safeName, {
-      type: file.type || "application/octet-stream",
+    // Supabase 클라이언트 대신 fetch API로 직접 업로드 (한글 헤더 문제 회피)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const uploadUrl = `${supabaseUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
+
+    const res = await fetch(uploadUrl, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${supabaseKey}`,
+        apikey: supabaseKey,
+        "Content-Type": file.type || "application/octet-stream",
+        "x-upsert": "true",
+      },
+      body: await file.arrayBuffer(),
     });
 
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET_NAME)
-      .upload(safeName, safeFile, { upsert: true });
+    const uploadError = res.ok ? null : { message: `HTTP ${res.status}` };
 
     if (!uploadError) {
       await supabase.from("file_metadata").insert({
