@@ -86,14 +86,21 @@ export default function ResourcesPage() {
     const uploadUrl = `${supabaseUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
 
     try {
+      if (!supabaseUrl || !supabaseKey) {
+        setMessage({ type: "error", text: "Supabase 설정이 누락되었습니다. 환경변수를 확인하세요." });
+        setUploading(false);
+        return;
+      }
+
       const buffer = await file.arrayBuffer();
+      const contentType = file.type || "application/octet-stream";
 
       const res = await fetch(uploadUrl, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${supabaseKey}`,
           apikey: supabaseKey,
-          "Content-Type": file.type || "application/octet-stream",
+          "Content-Type": contentType,
           "x-upsert": "true",
         },
         body: buffer,
