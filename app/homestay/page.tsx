@@ -200,7 +200,7 @@ export default function HomestayPage() {
         {/* 준비 사항 체크리스트 */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-4">
-            준비 사항 체크리스트 (수정중)
+            준비 사항 체크리스트 (작업중)
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {checklist.map((group) => (
