@@ -115,7 +115,7 @@ export default function Home() {
                 </li>
               </ul>
               <Link
-                href="/schedule"
+                href="/about#suwon-schedule"
                 className="inline-block mt-4 text-sm text-wyd-blue font-medium hover:text-wyd-red transition-colors"
               >
                 상세 일정 보기 &rarr;
@@ -149,7 +149,7 @@ export default function Home() {
                 </li>
               </ul>
               <Link
-                href="/schedule"
+                href="/about#seoul-schedule"
                 className="inline-block mt-4 text-sm text-wyd-blue font-medium hover:text-wyd-red transition-colors"
               >
                 상세 일정 보기 &rarr;

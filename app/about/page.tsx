@@ -108,7 +108,7 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
-              <h3 className="text-lg font-bold text-wyd-blue mb-4 border-l-4 border-wyd-gold pl-3">
+              <h3 id="suwon-schedule" className="text-lg font-bold text-wyd-blue mb-4 border-l-4 border-wyd-gold pl-3">
                 수원교구대회 일정 (예상, 미정)
               </h3>
               <div className="ml-2">
@@ -143,7 +143,7 @@ export default function AboutPage() {
                   </li>
                 </ul>
               </div>
-              <h3 className="text-lg font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-3">
+              <h3 id="seoul-schedule" className="text-lg font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-3">
                 서울 본대회 일정
               </h3>
               <div className="ml-2">
