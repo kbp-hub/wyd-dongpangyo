@@ -85,34 +85,42 @@ export default function ResourcesPage() {
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
     const uploadUrl = `${supabaseUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
 
-    const res = await fetch(uploadUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${supabaseKey}`,
-        apikey: supabaseKey,
-        "Content-Type": file.type || "application/octet-stream",
-        "x-upsert": "true",
-      },
-      body: await file.arrayBuffer(),
-    });
+    try {
+      const buffer = await file.arrayBuffer();
 
-    const uploadError = res.ok ? null : { message: `HTTP ${res.status}` };
-
-    if (!uploadError) {
-      await supabase.from("file_metadata").insert({
-        storage_name: safeName,
-        original_name: file.name,
-        size: file.size,
+      const res = await fetch(uploadUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${supabaseKey}`,
+          apikey: supabaseKey,
+          "Content-Type": file.type || "application/octet-stream",
+          "x-upsert": "true",
+        },
+        body: buffer,
       });
-    }
 
-    const error = uploadError;
-
-    if (error) {
-      setMessage({ type: "error", text: `업로드 실패: ${error.message}` });
-    } else {
-      setMessage({ type: "success", text: `"${file.name}" 업로드 완료` });
-      fetchFiles();
+      if (!res.ok) {
+        const text = await res.text();
+        setMessage({ type: "error", text: `업로드 실패: ${text}` });
+      } else {
+        // DB에 원본 파일명 저장
+        try {
+          await supabase.from("file_metadata").insert({
+            storage_name: safeName,
+            original_name: file.name,
+            size: file.size,
+          });
+        } catch {
+          // 메타데이터 저장 실패해도 파일 업로드는 성공
+        }
+        setMessage({ type: "success", text: `"${file.name}" 업로드 완료` });
+        fetchFiles();
+      }
+    } catch (err) {
+      setMessage({
+        type: "error",
+        text: `업로드 실패: ${err instanceof Error ? err.message : String(err)}`,
+      });
     }
 
     setUploading(false);
