@@ -53,15 +53,15 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-wyd-blue via-wyd-blue to-blue-900 text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="bg-gradient-to-br from-wyd-blue via-wyd-blue to-blue-900 text-white py-10 px-4">
+        <div className="max-w-4xl mx-auto text-center flex flex-col items-center justify-center">
           <p className="text-wyd-gold font-medium mb-2 text-lg">
             천주교 수원교구 동판교성당
           </p>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">
             2027 WYD
           </h1>
-          <blockquote className="text-lg md:text-xl italic text-wyd-gold mt-6 mb-10">
+          <blockquote className="text-lg md:text-xl italic text-wyd-gold mt-4 mb-6">
             &ldquo;용기를 내어라. 내가 세상을 이겼다&rdquo;
             <span className="block text-sm mt-1 text-white/70 not-italic">
               요한 16,33
