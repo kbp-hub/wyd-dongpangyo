@@ -23,8 +23,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 font-bold text-lg">
             <span className="text-wyd-gold text-2xl">+</span>
-            <span className="hidden sm:inline">2027 WYD 동판교성당</span>
-            <span className="sm:hidden">2027 WYD</span>
+            <span>2027 WYD 동판교성당</span>
           </Link>
 
           {/* Desktop nav */}
