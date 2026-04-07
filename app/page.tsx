@@ -61,9 +61,6 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             2027 WYD
           </h1>
-          <p className="text-xl md:text-2xl font-light mb-2 text-white/90">
-            세계청년대회
-          </p>
           <blockquote className="text-lg md:text-xl italic text-wyd-gold mt-6 mb-10">
             &ldquo;용기를 내어라. 내가 세상을 이겼다&rdquo;
             <span className="block text-sm mt-1 text-white/70 not-italic">
