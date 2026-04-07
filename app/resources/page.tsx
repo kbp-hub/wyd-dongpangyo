@@ -42,12 +42,20 @@ export default function ResourcesPage() {
       setFiles(
         (data || [])
           .filter((f) => f.name !== ".emptyFolderPlaceholder")
-          .map((f) => ({
-            name: f.name,
-            displayName: f.metadata?.originalName ?? f.name,
-            size: f.metadata?.size ?? 0,
-            created_at: f.created_at ?? "",
-          }))
+          .map((f) => {
+            // 파일명에서 원본명 복원: {safeName}___{encodedOriginalName}
+            const parts = f.name.split("___");
+            const displayName =
+              parts.length > 1
+                ? decodeURIComponent(parts.slice(1).join("___"))
+                : f.name;
+            return {
+              name: f.name,
+              displayName,
+              size: f.metadata?.size ?? 0,
+              created_at: f.created_at ?? "",
+            };
+          })
       );
     }
     setLoading(false);
@@ -64,16 +72,16 @@ export default function ResourcesPage() {
     setUploading(true);
     setMessage(null);
 
-    // 한글/특수문자 파일명 처리: 원본명을 보존하면서 안전한 경로로 업로드
+    // 한글/특수문자 파일명 처리: 원본명을 인코딩하여 안전한 경로로 업로드
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    // 원본 파일명을 안전하게 경로에 포함: {safeName}___{encodedOriginalName}
+    const encodedOriginal = encodeURIComponent(file.name);
+    const uploadName = `${safeName}___${encodedOriginal}`;
 
     const { error } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(safeName, file, {
-        upsert: true,
-        metadata: { originalName: file.name },
-      });
+      .upload(uploadName, file, { upsert: true });
 
     if (error) {
       setMessage({ type: "error", text: `업로드 실패: ${error.message}` });
