@@ -33,29 +33,33 @@ export default function ResourcesPage() {
 
   async function fetchFiles() {
     setLoading(true);
-    const { data, error } = await supabase.storage.from(BUCKET_NAME).list("", {
-      sortBy: { column: "created_at", order: "desc" },
-    });
+    const { data: storageData, error } = await supabase.storage
+      .from(BUCKET_NAME)
+      .list("", { sortBy: { column: "created_at", order: "desc" } });
+
     if (error) {
       setMessage({ type: "error", text: "파일 목록을 불러오지 못했습니다." });
     } else {
+      const filtered = (storageData || []).filter(
+        (f) => f.name !== ".emptyFolderPlaceholder"
+      );
+
+      // DB에서 원본 파일명 매핑 가져오기
+      const { data: metaData } = await supabase
+        .from("file_metadata")
+        .select("storage_name, original_name");
+
+      const nameMap = new Map(
+        (metaData || []).map((m) => [m.storage_name, m.original_name])
+      );
+
       setFiles(
-        (data || [])
-          .filter((f) => f.name !== ".emptyFolderPlaceholder")
-          .map((f) => {
-            // 파일명에서 원본명 복원: {safeName}___{encodedOriginalName}
-            const parts = f.name.split("___");
-            const displayName =
-              parts.length > 1
-                ? decodeURIComponent(parts.slice(1).join("___"))
-                : f.name;
-            return {
-              name: f.name,
-              displayName,
-              size: f.metadata?.size ?? 0,
-              created_at: f.created_at ?? "",
-            };
-          })
+        filtered.map((f) => ({
+          name: f.name,
+          displayName: nameMap.get(f.name) ?? f.name,
+          size: f.metadata?.size ?? 0,
+          created_at: f.created_at ?? "",
+        }))
       );
     }
     setLoading(false);
@@ -72,16 +76,23 @@ export default function ResourcesPage() {
     setUploading(true);
     setMessage(null);
 
-    // 한글/특수문자 파일명 처리: 원본명을 인코딩하여 안전한 경로로 업로드
+    // 한글/특수문자 파일명 처리: 안전한 이름으로 저장, 원본명은 DB에 보관
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    // 원본 파일명을 안전하게 경로에 포함: {safeName}___{encodedOriginalName}
-    const encodedOriginal = encodeURIComponent(file.name);
-    const uploadName = `${safeName}___${encodedOriginal}`;
 
-    const { error } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(uploadName, file, { upsert: true });
+      .upload(safeName, file, { upsert: true });
+
+    if (!uploadError) {
+      await supabase.from("file_metadata").insert({
+        storage_name: safeName,
+        original_name: file.name,
+        size: file.size,
+      });
+    }
+
+    const error = uploadError;
 
     if (error) {
       setMessage({ type: "error", text: `업로드 실패: ${error.message}` });
@@ -111,7 +122,11 @@ export default function ResourcesPage() {
     if (error) {
       setMessage({ type: "error", text: `삭제 실패: ${error.message}` });
     } else {
-      setMessage({ type: "success", text: `"${fileName}" 삭제 완료` });
+      await supabase
+        .from("file_metadata")
+        .delete()
+        .eq("storage_name", fileName);
+      setMessage({ type: "success", text: "삭제 완료" });
       fetchFiles();
     }
   }
