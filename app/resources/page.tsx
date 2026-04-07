@@ -80,12 +80,16 @@ export default function ResourcesPage() {
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    // File 객체의 한글 이름이 헤더에 들어가는 것을 방지하기 위해 Blob으로 변환
-    const blob = new Blob([file], { type: file.type });
+    // File 객체의 한글 이름이 헤더에 들어가는 것을 방지
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8 = new Uint8Array(arrayBuffer);
 
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(safeName, blob, { upsert: true, contentType: file.type });
+      .upload(safeName, uint8, {
+        upsert: true,
+        contentType: file.type || "application/octet-stream",
+      });
 
     if (!uploadError) {
       await supabase.from("file_metadata").insert({
