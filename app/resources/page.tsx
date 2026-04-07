@@ -84,6 +84,11 @@ export default function ResourcesPage() {
     const uploadUrl = `${sbUrl}/storage/v1/object/${BUCKET_NAME}/${safeName}`;
 
     try {
+      console.log("[자료실 디버그] URL:", uploadUrl);
+      console.log("[자료실 디버그] Key 길이:", sbKey?.length);
+      console.log("[자료실 디버그] file.type:", file.type);
+      console.log("[자료실 디버그] safeName:", safeName);
+
       if (!sbUrl || !sbKey) {
         setMessage({ type: "error", text: "Supabase 설정이 누락되었습니다. 환경변수를 확인하세요." });
         setUploading(false);
@@ -91,18 +96,19 @@ export default function ResourcesPage() {
       }
 
       const buffer = await file.arrayBuffer();
-      const contentType = file.type || "application/octet-stream";
+      console.log("[자료실 디버그] buffer size:", buffer.byteLength);
 
       const res = await fetch(uploadUrl, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${sbKey}`,
-          apikey: sbKey,
-          "Content-Type": contentType,
+          "Authorization": "Bearer " + sbKey,
+          "apikey": sbKey,
+          "Content-Type": "application/octet-stream",
           "x-upsert": "true",
         },
         body: buffer,
       });
+      console.log("[자료실 디버그] 응답:", res.status);
 
       if (!res.ok) {
         const text = await res.text();
