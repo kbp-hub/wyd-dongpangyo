@@ -80,16 +80,14 @@ export default function ResourcesPage() {
     const ext = file.name.split(".").pop() || "";
     const safeName = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
-    // File 객체의 한글 이름이 헤더에 들어가는 것을 방지
-    const arrayBuffer = await file.arrayBuffer();
-    const uint8 = new Uint8Array(arrayBuffer);
+    // 한글 파일명이 헤더에 포함되지 않도록 새 File 객체 생성
+    const safeFile = new File([file], safeName, {
+      type: file.type || "application/octet-stream",
+    });
 
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(safeName, uint8, {
-        upsert: true,
-        contentType: file.type || "application/octet-stream",
-      });
+      .upload(safeName, safeFile, { upsert: true });
 
     if (!uploadError) {
       await supabase.from("file_metadata").insert({
