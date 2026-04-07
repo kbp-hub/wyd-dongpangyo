@@ -95,18 +95,20 @@ export default function ResourcesPage() {
         return;
       }
 
-      const buffer = await file.arrayBuffer();
-      console.log("[자료실 디버그] buffer size:", buffer.byteLength);
+      // FormData 방식으로 업로드
+      const formData = new FormData();
+      formData.append("", new File([file], safeName, { type: "application/octet-stream" }));
+
+      console.log("[자료실 디버그] FormData 업로드 시작");
 
       const res = await fetch(uploadUrl, {
         method: "POST",
         headers: {
           "Authorization": "Bearer " + sbKey,
           "apikey": sbKey,
-          "Content-Type": "application/octet-stream",
           "x-upsert": "true",
         },
-        body: buffer,
+        body: formData,
       });
       console.log("[자료실 디버그] 응답:", res.status);
 
