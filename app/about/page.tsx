@@ -167,23 +167,6 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* 한국 가톨릭 */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-4">
-            한국 가톨릭의 특수성
-          </h2>
-          <div className="bg-wyd-light rounded-xl p-6 text-gray-700 leading-relaxed">
-            <p>
-              한국 천주교회는 세계에서{" "}
-              <strong>외국 선교사 없이 자국민이 스스로 신앙을 받아들여 세운
-              유일한 교회</strong>입니다. 1784년 이승훈이 북경에서 세례를 받고
-              돌아와 신앙 공동체를 형성한 것이 시작이었습니다. 이러한 자발적 신앙
-              수용의 역사는 전 세계 가톨릭 교회에서도 유례가 없는 특별한
-              사례입니다.
-            </p>
-          </div>
-        </section>
-
         {/* WYD 상징물 */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-4">
@@ -221,6 +204,23 @@ export default function AboutPage() {
             </div>
           </div>
 
+        </section>
+
+        {/* 한국 가톨릭 */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-wyd-blue mb-4 border-l-4 border-wyd-red pl-4">
+            한국 가톨릭의 특수성
+          </h2>
+          <div className="bg-wyd-light rounded-xl p-6 text-gray-700 leading-relaxed">
+            <p>
+              한국 천주교회는 세계에서{" "}
+              <strong>외국 선교사 없이 자국민이 스스로 신앙을 받아들여 세운
+              유일한 교회</strong>입니다. 1784년 이승훈이 북경에서 세례를 받고
+              돌아와 신앙 공동체를 형성한 것이 시작이었습니다. 이러한 자발적 신앙
+              수용의 역사는 전 세계 가톨릭 교회에서도 유례가 없는 특별한
+              사례입니다.
+            </p>
+          </div>
         </section>
 
       </div>
