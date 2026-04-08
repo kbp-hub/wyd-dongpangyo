@@ -39,12 +39,6 @@ const quickLinks = [
     description: "WYD 관련 자료 공유",
     icon: "📁",
   },
-  {
-    href: "/news",
-    title: "소식",
-    description: "최신 소식과 공지사항",
-    icon: "📢",
-  },
 ];
 
 export default function Home() {
@@ -162,7 +156,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center text-wyd-blue mb-10">
             바로가기
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {quickLinks.map((link) => (
               <Link
                 key={link.href}
