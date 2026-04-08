@@ -55,7 +55,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-3">
             2027 WYD
           </h1>
-          <blockquote className="text-xl md:text-3xl italic font-semibold text-wyd-gold mt-4 mb-6">
+          <blockquote className="text-xl md:text-2xl italic font-semibold text-wyd-gold mt-4 mb-6">
             &ldquo;용기를 내어라. 내가 세상을 이겼다&rdquo;
             <span className="block text-sm mt-1 text-white/70 not-italic">
               요한 16,33
