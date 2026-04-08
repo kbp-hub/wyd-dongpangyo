@@ -88,7 +88,7 @@ export default function ParticipatePage() {
             {volunteerRoles.map((role) => (
               <div
                 key={role.title}
-                className="bg-white border border-gray-200 rounded-xl p-5 hover:border-wyd-blue/30 transition-colors"
+                className="bg-white border border-gray-200 rounded-xl p-5 hover:border-wyd-blue/30 transition-colors text-center"
               >
                 <span className="text-3xl block mb-3">{role.icon}</span>
                 <h3 className="font-bold text-wyd-blue mb-2">{role.title}</h3>
