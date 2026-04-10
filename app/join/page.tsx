@@ -45,6 +45,45 @@ export default function JoinPage() {
           </p>
         </div>
 
+        {/* 프로그램 목록 */}
+        {programs.map((program) => (
+          <section key={program.category} className="mb-12">
+            <h2 className="text-2xl font-bold text-wyd-blue mb-6 border-l-4 border-wyd-red pl-4">
+              <span className="mr-2">{program.icon}</span>
+              {program.category}
+            </h2>
+            <div className="space-y-4">
+              {program.items.map((item) => (
+                <div
+                  key={item.title}
+                  className="bg-white border border-gray-200 rounded-xl p-5 hover:border-wyd-blue/30 transition-colors"
+                >
+                  <h3 className="font-bold text-gray-900 mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {item.description}
+                  </p>
+                  {item.link ? (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-3 bg-wyd-blue text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-blue-800 transition-colors"
+                    >
+                      {item.linkLabel}
+                    </a>
+                  ) : (
+                    <span className="inline-block mt-3 text-xs px-3 py-1 bg-gray-100 text-gray-500 rounded-full">
+                      일정 확정 예정
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+
         {/* WYD 십자가·성모성화 순례 */}
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-wyd-blue mb-6 border-l-4 border-wyd-red pl-4">
@@ -115,7 +154,7 @@ export default function JoinPage() {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+              {[3, 4, 5, 6, 7, 8].map((n) => (
                 <div key={n} className="rounded-xl overflow-hidden">
                   <Image
                     src={`/images/wyd-cross-${n}.jpg`}
@@ -129,45 +168,6 @@ export default function JoinPage() {
             </div>
           </div>
         </section>
-
-        {/* 프로그램 목록 */}
-        {programs.map((program) => (
-          <section key={program.category} className="mb-12">
-            <h2 className="text-2xl font-bold text-wyd-blue mb-6 border-l-4 border-wyd-red pl-4">
-              <span className="mr-2">{program.icon}</span>
-              {program.category}
-            </h2>
-            <div className="space-y-4">
-              {program.items.map((item) => (
-                <div
-                  key={item.title}
-                  className="bg-white border border-gray-200 rounded-xl p-5 hover:border-wyd-blue/30 transition-colors"
-                >
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {item.description}
-                  </p>
-                  {item.link ? (
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block mt-3 bg-wyd-blue text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-blue-800 transition-colors"
-                    >
-                      {item.linkLabel}
-                    </a>
-                  ) : (
-                    <span className="inline-block mt-3 text-xs px-3 py-1 bg-gray-100 text-gray-500 rounded-full">
-                      일정 확정 예정
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
 
       </div>
     </div>
