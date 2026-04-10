@@ -1,27 +1,31 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, Suspense } from "react";
 
-export default function ScrollToTop() {
+function ScrollToTopInner() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // 앵커(#)가 있으면 해당 요소로 스크롤, 없으면 최상단
     const hash = window.location.hash;
     if (hash) {
-      setTimeout(() => {
-        const el = document.querySelector(hash);
-        if (el) {
-          const headerHeight = 64;
-          const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
-          window.scrollTo({ top, behavior: "smooth" });
-        }
-      }, 100);
+      const el = document.getElementById(hash.slice(1));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   return null;
+}
+
+export default function ScrollToTop() {
+  return (
+    <Suspense>
+      <ScrollToTopInner />
+    </Suspense>
+  );
 }
