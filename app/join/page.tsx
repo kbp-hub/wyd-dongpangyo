@@ -115,24 +115,17 @@ export default function JoinPage() {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div className="rounded-xl overflow-hidden">
-                <Image
-                  src="/images/wyd-cross-1.jpg"
-                  alt="WYD 십자가성화순례 동판교성당 1"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover rounded-xl"
-                />
-              </div>
-              <div className="rounded-xl overflow-hidden">
-                <Image
-                  src="/images/wyd-cross-2.jpg"
-                  alt="WYD 십자가성화순례 동판교성당 2"
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover rounded-xl"
-                />
-              </div>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                <div key={n} className="rounded-xl overflow-hidden">
+                  <Image
+                    src={`/images/wyd-cross-${n}.jpg`}
+                    alt={`WYD 십자가성화순례 동판교성당 ${n}`}
+                    width={600}
+                    height={400}
+                    className="w-full h-auto object-cover rounded-xl"
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>
