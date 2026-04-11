@@ -204,6 +204,27 @@ export default function AboutPage() {
             </div>
           </div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div className="rounded-xl overflow-hidden">
+              <Image
+                src="/images/wyd-symbol-cross.jpg"
+                alt="WYD 상징물 십자가"
+                width={600}
+                height={400}
+                className="w-full h-auto object-cover rounded-xl"
+              />
+            </div>
+            <div className="rounded-xl overflow-hidden">
+              <Image
+                src="/images/wyd-symbol-icon.jpg"
+                alt="WYD 상징물 성화"
+                width={600}
+                height={400}
+                className="w-full h-auto object-cover rounded-xl"
+              />
+            </div>
+          </div>
+
         </section>
 
         {/* 한국 가톨릭 */}
